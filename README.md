@@ -21,19 +21,6 @@ dependencies:
 ```dart
 import 'package:speech_to_text/speech_to_text.dart';
 ```
-## Images
-
-
-#### radial type
-<p align="center">
-<img src="https://raw.githubusercontent.com/souvik2710/versatile_gradient_text/master/images/gradient2.png" width="400" height="180" hspace="20"/>
-</p>
-
-
-#### linear type
-<p align="center">
-<img src="https://raw.githubusercontent.com/souvik2710/versatile_gradient_text/master/images/gradient1.png" width="400" height="180" hspace="20"/>
-</p>
 
 
 ## Example
@@ -46,100 +33,63 @@ import 'package:speech_to_text/speech_to_text.dart';
 <td>
 
 ```dart
-class DemoGradientScreen extends StatelessWidget {
-  const DemoGradientScreen({Key? key}) : super(key: key);
+class SpeechToTextUltraWidgetImplementation extends StatefulWidget {
+  const SpeechToTextUltraWidgetImplementation({super.key});
+
+  @override
+  State<SpeechToTextUltraWidgetImplementation> createState() => _SpeechToTextUltraWidgetImplementationState();
+}
+
+class _SpeechToTextUltraWidgetImplementationState extends State<SpeechToTextUltraWidgetImplementation> {
+  bool mIsListening = false;
+  String mEntireResponse = '';
+  String mLiveResponse = '';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.teal,
+        centerTitle :true,
+        title: const Text('Speech To Text Ultra',style: TextStyle(fontSize: 20,fontWeight: FontWeight.w500),),
+      ),
       body: Center(
-          child: VersatileGradientText(
-            textString: 'Gradient Text',
-            colorOne: Colors.yellow, colorTwo: Colors.deepOrange,
-            fontSize: 40, versatileGradientType: VersatileGradientType.radial,)
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              mIsListening
+                  ? Text('$mEntireResponse $mLiveResponse')
+                  : Text(mEntireResponse),
+              const SizedBox(height: 20),
+              SpeechToTextUltra(
+                ultraCallback:
+                    (String liveText, String finalText, bool isListening) {
+                  setState(() {
+                    mLiveResponse = liveText;
+                    mEntireResponse = finalText;
+                    mIsListening = isListening;
+                  });
+                },
+                // toPauseIcon: const Icon(Icons.pause),
+                // toStartIcon: const Icon(Icons.mic),
+                // pauseIconColor: Colors.black,
+                // startIconColor: Colors.black,
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
 }
+
 ```
 
 </td>
 </tr>
 </table>
-
-[comment]: <> (## Next Goals)
-
-[comment]: <> (- [ ] Make more ui and buttons more robust.)
-
-[comment]: <> (  Now all the buttons and functionalities are constant.In the future need to make it more customisable.)
-
-[comment]: <> (- [x] Handle all exceptions)
-
-[comment]: <> (  Handling of exceptions complete)
-
-[comment]: <> (- [ ] Add the calculator only as a side container or as a part of another widget.)[//]: # (<!--)
-
-[//]: # (This README describes the package. If you publish this package to pub.dev,)
-
-[//]: # (this README's contents appear on the landing page for your package.)
-
-[//]: # ()
-[//]: # (For information about how to write a good package README, see the guide for)
-
-[//]: # ([writing package pages]&#40;https://dart.dev/guides/libraries/writing-package-pages&#41;.)
-
-[//]: # ()
-[//]: # (For general information about developing packages, see the Dart guide for)
-
-[//]: # ([creating packages]&#40;https://dart.dev/guides/libraries/create-library-packages&#41;)
-
-[//]: # (and the Flutter guide for)
-
-[//]: # ([developing packages and plugins]&#40;https://flutter.dev/developing-packages&#41;.)
-
-[//]: # (-->)
-
-[//]: # ()
-[//]: # (TODO: Put a short description of the package here that helps potential users)
-
-[//]: # (know whether this package might be useful for them.)
-
-[//]: # ()
-[//]: # (## Features)
-
-[//]: # ()
-[//]: # (TODO: List what your package can do. Maybe include images, gifs, or videos.)
-
-[//]: # ()
-[//]: # (## Getting started)
-
-[//]: # ()
-[//]: # (TODO: List prerequisites and provide or point to information on how to)
-
-[//]: # (start using the package.)
-
-[//]: # ()
-[//]: # (## Usage)
-
-[//]: # ()
-[//]: # (TODO: Include short and useful examples for package users. Add longer examples)
-
-[//]: # (to `/example` folder.)
-
-[//]: # ()
-[//]: # (```dart)
-
-[//]: # (const like = 'sample';)
-
-[//]: # (```)
-
-[//]: # ()
-[//]: # (## Additional information)
-
-[//]: # ()
-[//]: # (TODO: Tell users more about the package: where to find more information, how to)
-
-[//]: # (contribute to the package, how to file issues, what response they can expect)
-
-[//]: # (from the package authors, and more.)

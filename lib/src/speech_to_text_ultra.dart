@@ -1,100 +1,109 @@
-import 'package:flutter/material.dart';
 import 'package:speech_to_text/speech_to_text.dart';
+import 'package:flutter/material.dart';
 
-class VoiceExampleScreen extends StatefulWidget {
-  late final  SpeechToText speech;
-  final bool isListening = false;
-  final String words ='';
-  final String entireResponse = '';
-    VoiceExampleScreen({super.key});
+class SpeechToTextUltra extends StatefulWidget {
+  // final ValueChanged<String> callback;
+  final Icon? toPauseIcon;
+  final Icon? toStartIcon;
+  final Color? pauseIconColor;
+  final Color? startIconColor;
+  final double? startIconSize;
+  final double? pauseIconSize;
+  final Function(String liveText, String finalText, bool isListening) ultraCallback;
+
+  // String combinedResponse = '';
+  const SpeechToTextUltra(
+      {super.key,
+        required this.ultraCallback,
+        this.toPauseIcon = const Icon(Icons.pause),
+        this.toStartIcon = const Icon(Icons.mic),
+        this.pauseIconColor = Colors.black,
+        this.startIconColor = Colors.black,
+        this.startIconSize = 24,
+        this.pauseIconSize = 24});
 
   @override
-  State<VoiceExampleScreen> createState() => _VoiceExampleScreenState();
+  State<SpeechToTextUltra> createState() => _SpeechToTextUltraState();
 }
 
-class _VoiceExampleScreenState extends State<VoiceExampleScreen> {
-
+class _SpeechToTextUltraState extends State<SpeechToTextUltra> {
+  late SpeechToText speech;
+  bool isListening = false;
+  String liveResponse = '';
+  String entireResponse = '';
+  String chunkResponse = '';
 
   @override
   void initState() {
     super.initState();
-    widget.speech = SpeechToText();
+    speech = SpeechToText();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Voice Input'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            widget.isListening ? Text('$entireResponse + $words'):Text(entireResponse),
-            SizedBox(height: 20),
-            isListening
-                ? IconButton(
-              icon: Icon(Icons.pause),
-              onPressed: () {
-                stopListening();
-              },
-            )
-                : IconButton(
-              icon: Icon(Icons.mic),
-              onPressed: () {
-                startListening();
-              },
-            ),
-          ],
-        ),
+    return Center(
+      child: isListening
+          ? IconButton(
+        iconSize: widget.pauseIconSize,
+        icon: widget.toPauseIcon!,
+        color: widget.pauseIconColor,
+        onPressed: () {
+          stopListening();
+        },
+      )
+          : IconButton(
+        iconSize: widget.startIconSize,
+        color: widget.startIconColor,
+        icon: widget.toStartIcon!,
+        onPressed: () {
+          startListening();
+        },
       ),
     );
   }
+
   void startListening() async {
+    // speech = SpeechToText();
     bool available = await speech.initialize(
-      onStatus: (status) async{
-        print('Speech recognition status: $status');
-        if(status=="done" &&  isListening ){
-          // notListening
-          debugPrint('111111 start');
+      onStatus: (status) async {
+        // print('Speech recognition status: $status AND is LISTENING STATUS ${isListening}');
+        if ((status == "done" || status == "notListening") && isListening) {
           await speech.stop();
-          debugPrint('WORDS---> ${words}');
           setState(() {
-            if(words!='') {
-              entireResponse = '$entireResponse || $words';
-              debugPrint('ENTIRE RESPONSE---> $entireResponse');
+            if (chunkResponse != '') {
+              entireResponse = '$entireResponse $chunkResponse';
             }
-            words = '';
-            // stt.SpeechToText s =  stt.SpeechToText();
+            chunkResponse = '';
+            liveResponse = '';
+            //MAIN CALLBACK HAPPENS
+            widget.ultraCallback(liveResponse, entireResponse, isListening);
           });
           startListening();
-          debugPrint('111111 end');
         }
-      },
-      onError: (error) {
-        print('Speech recognition error: $error');
       },
     );
 
     if (available) {
       setState(() {
         isListening = true;
+        liveResponse = '';
+        chunkResponse = '';
+        widget.ultraCallback(liveResponse, entireResponse, isListening);
       });
-      speech.listen(
+      await speech.listen(
         onResult: (result) {
           setState(() {
             final state = result.recognizedWords;
-            debugPrint('@@@@  ${state}');
-            words = state;
-            // final words = result.recognizedWords;
-            // debugPrint('@@@@  $words');
-            // debugPrint('@@@@  ${entireResponse}');
+            liveResponse = state;
+            if (result.finalResult) {
+              chunkResponse = result.recognizedWords;
+            }
+            widget.ultraCallback(liveResponse, entireResponse, isListening);
           });
         },
       );
     } else {
-      print('Speech recognition not available');
+      debugPrint('Ultra Speech ERROR : Speech recognition not available');
     }
   }
 
@@ -102,9 +111,8 @@ class _VoiceExampleScreenState extends State<VoiceExampleScreen> {
     speech.stop();
     setState(() {
       isListening = false;
+      entireResponse = '$entireResponse $chunkResponse';
+      widget.ultraCallback(liveResponse, entireResponse, isListening);
     });
   }
-
 }
-
-
