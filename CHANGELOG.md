@@ -1,3 +1,6 @@
 ## 0.0.1
 
-* TODO: Describe initial release.
+- Implemented manual pause and play functionality for speech recognition.
+- Addressed issue of sudden pauses during speech input.
+- Enhanced user experience by allowing uninterrupted dictation of paragraphs.
+- Added intuitive pause and play features for improved control over speech interaction.
