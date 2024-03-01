@@ -1,9 +1,5 @@
 name: speech_to_text_ultra
-description: "This Flutter package designed to address the inconvenience of sudden pauses during speech recognition.
- With manual control over pause and play functionality, users can now dictate paragraphs without interruptions, ensuring a 
- seamless and uninterrupted speech recognition experience. Elevate your Flutter applications with improved speech interaction, 
- empowering users to communicate effortlessly and effectively.
-"
+description: "Introducing a Flutter package solving sudden pauses during speech recognition. Manual pause/play allows uninterrupted dictation, enhancing user experience for seamless interaction."
 version: 0.0.1
 homepage: https://github.com/souvik2710/speech_to_text_ultra
 
@@ -57,3 +53,8 @@ flutter:
   #
   # For details regarding fonts in packages, see
   # https://flutter.dev/custom-fonts/#from-packages
+
+#  This Flutter package designed to address the inconvenience of sudden pauses during speech recognition.
+#  With manual control over pause and play functionality, users can now dictate paragraphs without interruptions, ensuring a
+#  seamless and uninterrupted speech recognition experience. Elevate your Flutter applications with improved speech interaction,
+#  empowering users to communicate effortlessly and effectively.

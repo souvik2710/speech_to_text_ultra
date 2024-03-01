@@ -9,18 +9,19 @@ class SpeechToTextUltra extends StatefulWidget {
   final Color? startIconColor;
   final double? startIconSize;
   final double? pauseIconSize;
-  final Function(String liveText, String finalText, bool isListening) ultraCallback;
+  final Function(String liveText, String finalText, bool isListening)
+      ultraCallback;
 
   // String combinedResponse = '';
   const SpeechToTextUltra(
       {super.key,
-        required this.ultraCallback,
-        this.toPauseIcon = const Icon(Icons.pause),
-        this.toStartIcon = const Icon(Icons.mic),
-        this.pauseIconColor = Colors.black,
-        this.startIconColor = Colors.black,
-        this.startIconSize = 24,
-        this.pauseIconSize = 24});
+      required this.ultraCallback,
+      this.toPauseIcon = const Icon(Icons.pause),
+      this.toStartIcon = const Icon(Icons.mic),
+      this.pauseIconColor = Colors.black,
+      this.startIconColor = Colors.black,
+      this.startIconSize = 24,
+      this.pauseIconSize = 24});
 
   @override
   State<SpeechToTextUltra> createState() => _SpeechToTextUltraState();
@@ -44,21 +45,21 @@ class _SpeechToTextUltraState extends State<SpeechToTextUltra> {
     return Center(
       child: isListening
           ? IconButton(
-        iconSize: widget.pauseIconSize,
-        icon: widget.toPauseIcon!,
-        color: widget.pauseIconColor,
-        onPressed: () {
-          stopListening();
-        },
-      )
+              iconSize: widget.pauseIconSize,
+              icon: widget.toPauseIcon!,
+              color: widget.pauseIconColor,
+              onPressed: () {
+                stopListening();
+              },
+            )
           : IconButton(
-        iconSize: widget.startIconSize,
-        color: widget.startIconColor,
-        icon: widget.toStartIcon!,
-        onPressed: () {
-          startListening();
-        },
-      ),
+              iconSize: widget.startIconSize,
+              color: widget.startIconColor,
+              icon: widget.toStartIcon!,
+              onPressed: () {
+                startListening();
+              },
+            ),
     );
   }
 
