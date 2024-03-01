@@ -93,3 +93,11 @@ class _SpeechToTextUltraWidgetImplementationState extends State<SpeechToTextUltr
 </td>
 </tr>
 </table>
+
+## Features
+
+- Seamlessly pause and resume speech recognition manually for uninterrupted dictation.
+- Eliminate sudden pauses during speech input, ensuring smooth and uninterrupted interactions.
+- Empower users to dictate entire paragraphs without interruptions or breaks.
+- Enhance user experience by providing manual control over speech recognition pause/play functionality.
+- Streamline speech input in Flutter applications with intuitive pause and play features.
